@@ -395,8 +395,9 @@ section{ padding:96px 0; }
 .testimonial{ background:var(--white); border:1px solid var(--line); border-radius:var(--radius-l); padding:2rem; display:flex; flex-direction:column; gap:1.2rem; }
 .testimonial-quote{ font-size:.98rem; color:var(--navy-ink); margin:0; }
 .testimonial-who{ display:flex; align-items:center; gap:.8rem; margin-top:auto; }
-.testimonial-avatar{ width:40px; height:40px; border-radius:50%; background:var(--navy-deep); display:flex; align-items:center; justify-content:center; flex:none; }
+.testimonial-avatar{ width:52px; height:52px; border-radius:50%; background:var(--navy-deep); display:flex; align-items:center; justify-content:center; flex:none; overflow:hidden; }
 .testimonial-avatar svg{ width:18px; height:18px; color:var(--amber); }
+.testimonial-avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
 .testimonial-who b{ display:block; font-size:.88rem; }
 .testimonial-who span{ font-family:var(--font-mono); font-size:.7rem; color:var(--slate-light); }
 
@@ -405,6 +406,7 @@ section{ padding:96px 0; }
 .team-card{ background:var(--white); border:1px solid var(--line); border-radius:var(--radius-l); overflow:hidden; }
 .team-photo{ aspect-ratio:1/1; background:var(--navy-deep); position:relative; }
 .team-photo svg{ width:100%; height:100%; }
+.team-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
 .team-body{ padding:1.3rem 1.4rem 1.6rem; }
 .team-body h3{ font-size:1rem; margin-bottom:.15em; }
 .team-role{ font-family:var(--font-mono); font-size:.72rem; color:var(--amber-deep); display:block; margin-bottom:.7em; }
@@ -469,11 +471,8 @@ section{ padding:96px 0; }
   padding:70px 0 78px;
   position:relative; overflow:hidden;
 }
-.page-hero.has-bg-photo{ background:var(--navy-deep); }
-.page-hero.has-bg-photo::before{
-  content:''; position:absolute; inset:0; z-index:0;
-  background-image:var(--hero-bg-photo);
-  background-size:cover; background-position:center;
+.page-hero.has-bg-photo{
+  background-size:cover; background-position:center; background-repeat:no-repeat;
 }
 .page-hero.has-bg-photo::after{
   content:''; position:absolute; inset:0; z-index:1;
