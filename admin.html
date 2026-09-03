@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace admin — JT Service</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/logo.jpg">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+
+<div id="login-view" class="login-screen" style="display:none;">
+  <div class="login-card">
+    <img src="assets/logo.jpg" alt="JT Service">
+    <h1>Espace admin</h1>
+    <p>Connectez-vous pour gérer les réalisations affichées sur le site.</p>
+
+    <div id="config-warning" class="config-warning">
+      Supabase n'est pas encore configuré. Ouvrez <code>js/supabase-config.js</code>
+      et renseignez votre <code>SUPABASE_URL</code> et votre <code>SUPABASE_ANON_KEY</code>
+      (voir <code>SETUP.md</code> pour le détail des étapes).
+    </div>
+
+    <div id="login-error" class="login-error"></div>
+    <form id="login-form">
+      <div class="field">
+        <label for="login-email">E-mail</label>
+        <input type="email" id="login-email" required autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="login-password">Mot de passe</label>
+        <input type="password" id="login-password" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-amber">Se connecter</button>
+    </form>
+  </div>
+</div>
+
+<div id="dashboard-view" style="display:none;">
+  <header class="admin-header">
+    <div class="brand">
+      <img src="assets/logo.jpg" alt="JT Service">
+      <span>
+        <span class="brand-name">JT SERVICE</span><br>
+        <span class="brand-tag">Espace admin — Réalisations</span>
+      </span>
+    </div>
+    <button id="logout-btn" class="admin-logout">Se déconnecter</button>
+  </header>
+
+  <div class="admin-wrap">
+
+    <section class="admin-section">
+      <h2 id="form-title">Ajouter une réalisation</h2>
+      <form id="project-form" class="admin-form">
+        <div class="form-row">
+          <div class="field">
+            <label for="f-title">Titre</label>
+            <input type="text" id="f-title" required placeholder="Ex. Centrale solaire en autoconsommation">
+          </div>
+          <div class="field">
+            <label for="f-category">Catégorie</label>
+            <select id="f-category" required>
+              <option value="residentiel">Résidentiel</option>
+              <option value="tertiaire">Tertiaire</option>
+              <option value="industriel">Industriel</option>
+              <option value="photovoltaique">Photovoltaïque</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-location">Lieu (optionnel)</label>
+          <input type="text" id="f-location" placeholder="Ex. Cotonou · Résidentiel">
+        </div>
+        <div class="field">
+          <label for="f-description">Description courte</label>
+          <textarea id="f-description" placeholder="1 à 2 phrases décrivant le chantier"></textarea>
+        </div>
+
+        <div id="current-image-preview" class="current-image-preview">
+          <img src="" alt="">
+          <span>Photo actuelle — choisissez un fichier ci-dessous pour la remplacer.</span>
+        </div>
+        <div class="field">
+          <label for="f-image">Photo</label>
+          <input type="file" id="f-image" accept="image/*">
+        </div>
+
+        <label class="checkbox-row">
+          <input type="checkbox" id="f-published" checked>
+          Visible sur le site (publié)
+        </label>
+
+        <div class="admin-form-actions">
+          <button type="submit" id="submit-btn" class="btn btn-amber">Publier la réalisation</button>
+          <button type="button" id="cancel-edit-btn" class="btn-cancel">Annuler la modification</button>
+        </div>
+        <p id="form-msg" class="form-msg"></p>
+      </form>
+    </section>
+
+    <section class="admin-section">
+      <h2>Réalisations existantes</h2>
+      <div id="admin-list" class="admin-list">
+        <p class="admin-empty">Chargement…</p>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

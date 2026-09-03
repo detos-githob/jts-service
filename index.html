@@ -271,7 +271,7 @@
       <p>Un aperçu de nos interventions en électricité bâtiment, industrielle et photovoltaïque.</p>
     </div>
 
-    <div class="project-grid">
+    <div class="project-grid" id="home-realisations-grid">
       <div class="project-card" data-reveal>
         <div class="project-thumb">
           <span class="project-tag">Photovoltaïque</span>
@@ -400,6 +400,7 @@
     <div class="footer-bottom">
       <span>© <span id="year"></span> JT Service — Tous droits réservés.</span>
       <span>Électricité · Bâtiment · Industriel · Photovoltaïque</span>
+      <a href="admin.html" style="color:rgba(255,255,255,.35); font-size:.78rem;">Espace admin</a>
     </div>
   </div>
 </footer>
@@ -409,6 +410,9 @@
 </a>
 
 <script src="js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/projects-public.js"></script>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>

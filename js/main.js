@@ -1,6 +1,12 @@
 /* =========================================================
    JT SERVICE — interactions
    ========================================================= */
+
+// Espace de nom global exposé pour que le contenu chargé
+// dynamiquement (ex. projects-public.js) puisse s'intégrer
+// aux mêmes animations/filtres que le contenu statique.
+window.JTS = window.JTS || {};
+
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- Header : ombre au scroll ---------- */
@@ -35,24 +41,26 @@ document.addEventListener('DOMContentLoaded', () => {
   nav?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
   window.addEventListener('keydown', e => { if(e.key === 'Escape') closeNav(); });
 
-  /* ---------- Reveal au scroll ---------- */
-  const revealEls = document.querySelectorAll('[data-reveal]');
-  if('IntersectionObserver' in window && revealEls.length){
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting){
-          entry.target.classList.add('is-visible');
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold:0.14, rootMargin:'0px 0px -60px 0px' });
-    revealEls.forEach((el, i) => {
-      el.style.transitionDelay = (i % 3) * 60 + 'ms';
-      io.observe(el);
+  /* ---------- Reveal au scroll (observable, réutilisable) ---------- */
+  const supportsIO = 'IntersectionObserver' in window;
+  const revealIO = supportsIO ? new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('is-visible');
+        revealIO.unobserve(entry.target);
+      }
     });
-  } else {
-    revealEls.forEach(el => el.classList.add('is-visible'));
-  }
+  }, { threshold:0.14, rootMargin:'0px 0px -60px 0px' }) : null;
+
+  // Observe un élément [data-reveal] (statique ou ajouté plus tard).
+  window.JTS.observeReveal = (el, delayIndex = 0) => {
+    if(!el) return;
+    el.style.transitionDelay = (delayIndex % 3) * 60 + 'ms';
+    if(revealIO){ revealIO.observe(el); }
+    else { el.classList.add('is-visible'); }
+  };
+
+  document.querySelectorAll('[data-reveal]').forEach((el, i) => window.JTS.observeReveal(el, i));
 
   /* ---------- Ligne de courant (spine) : suit la progression de scroll ---------- */
   const flow = document.querySelector('.power-spine .flow');
@@ -69,6 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSpine();
     window.addEventListener('scroll', updateSpine, { passive:true });
     window.addEventListener('resize', updateSpine);
+    // Ré-évalue la hauteur de page une fois le contenu dynamique chargé.
+    window.JTS.refreshSpine = updateSpine;
   }
 
   /* ---------- Carousel hero (crossfade) ---------- */
@@ -105,20 +115,27 @@ document.addEventListener('DOMContentLoaded', () => {
     startAutoplay();
   }
 
-  /* ---------- Filtre projets ---------- */
+  /* ---------- Filtre projets (relit le DOM à chaque clic pour
+     fonctionner même si les cartes sont ajoutées après coup) ---------- */
   const filterButtons = document.querySelectorAll('.filter-btn');
-  const projectCards = document.querySelectorAll('.project-card');
+  const applyFilter = (filter) => {
+    document.querySelectorAll('.project-card').forEach(card => {
+      const match = filter === 'tous' || card.dataset.category === filter;
+      card.style.display = match ? '' : 'none';
+    });
+  };
   filterButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       filterButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      const filter = btn.dataset.filter;
-      projectCards.forEach(card => {
-        const match = filter === 'tous' || card.dataset.category === filter;
-        card.style.display = match ? '' : 'none';
-      });
+      applyFilter(btn.dataset.filter);
     });
   });
+  // Permet au contenu chargé dynamiquement de réappliquer le filtre actif.
+  window.JTS.reapplyActiveFilter = () => {
+    const activeBtn = document.querySelector('.filter-btn.active');
+    applyFilter(activeBtn ? activeBtn.dataset.filter : 'tous');
+  };
 
   /* ---------- FAQ accordéon ---------- */
   document.querySelectorAll('.faq-q').forEach(btn => {
