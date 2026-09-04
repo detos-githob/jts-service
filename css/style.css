@@ -134,10 +134,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   padding:14px 28px;
   max-width:var(--container); margin:0 auto;
 }
-.brand{display:flex; align-items:center; gap:.7em;}
-.brand img{height:42px; width:auto;}
-.brand-name{font-family:var(--font-display); font-weight:700; font-size:1.05rem; line-height:1.05;}
-.brand-tag{display:block; font-family:var(--font-mono); font-size:.6rem; letter-spacing:.08em; color:var(--slate-light); text-transform:uppercase; margin-top:2px;}
+.brand{display:flex; align-items:center; gap:.7em; min-width:0; flex:1 1 auto; overflow:hidden;}
+.brand img{height:42px; width:auto; flex:none;}
+.brand-name{font-family:var(--font-display); font-weight:700; font-size:1.05rem; line-height:1.05; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.brand-tag{display:block; font-family:var(--font-mono); font-size:.6rem; letter-spacing:.08em; color:var(--slate-light); text-transform:uppercase; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 
 .main-nav{display:flex; align-items:center; gap:2.1rem;}
 .main-nav a{
@@ -152,7 +152,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .main-nav a:hover::after, .main-nav a.active::after{ right:0; }
 .main-nav a.active{color:var(--navy-ink); font-weight:600;}
 
-.header-cta{display:flex; align-items:center; gap:1.4rem;}
+.header-cta{display:flex; align-items:center; gap:1.4rem; flex:none;}
 .nav-toggle{
   display:none; flex-direction:column; gap:5px; background:none; border:0; padding:6px;
 }
@@ -617,6 +617,12 @@ section{ padding:96px 0; }
 
 @media (max-width: 620px){
   section{ padding:64px 0; }
+  .header-inner{ padding:12px 16px; }
+  .brand img{ height:34px; }
+  .brand-tag{ display:none; }
+  .header-cta{ gap:.6rem; }
+  .header-cta .btn-amber{ padding:.65em .95em; font-size:.8rem; }
+  .header-cta .btn-amber svg{ display:none; }
   .cta-band{ padding:2.4rem 1.6rem; flex-direction:column; align-items:flex-start; }
   .project-grid{ grid-template-columns:1fr; }
   .value-grid{ grid-template-columns:1fr; }
